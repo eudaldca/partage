@@ -15,15 +15,14 @@ class ExpenseForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->columnSpanFull(),
                 TextInput::make('amount')
                     ->required()
                     ->numeric(),
                 DatePicker::make('date')
                     ->required()
                     ->default(now()),
-                Textarea::make('description')
-                    ->columnSpanFull(),
                 Select::make('owner_id')
                     ->relationship('owner', 'name')
                     ->preload()
@@ -35,6 +34,8 @@ class ExpenseForm
                     ->searchable()
                     ->preload()
                     ->required(),
+                Textarea::make('description')
+                    ->columnSpanFull(),
             ]);
     }
 }

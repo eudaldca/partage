@@ -21,7 +21,7 @@ class Payment extends Model
 
     protected $casts = [
         'date' => 'date',
-        'amount' => MoneyCast::class . ':EUR',
+        'amount' => MoneyCast::class,
     ];
 
     public function fromUser(): BelongsTo

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Elegantly\Money\MoneyCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,9 +20,10 @@ class Expense extends Model
         'owner_id',
         'category_id',
     ];
+
     protected $casts = [
         'date' => 'date',
-        'amount' => 'integer',
+        'amount' => MoneyCast::class,
     ];
 
     public function owner(): BelongsTo

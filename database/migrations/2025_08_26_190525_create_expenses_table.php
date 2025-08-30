@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->integer('amount');
+            $table->bigInteger('amount');
             $table->date('date');
             $table->text('description')->nullable();
             $table->foreignId('owner_id')->constrained('users');

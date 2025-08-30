@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Categories\Schemas;
 
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Guava\IconPicker\Forms\Components\IconPicker;
 
 class CategoryForm
 {
@@ -16,9 +18,12 @@ class CategoryForm
                     ->required(),
                 Textarea::make('description')
                     ->columnSpanFull(),
-                TextInput::make('icon')
+                IconPicker::make('icon')
+                    ->sets(['fontawesome-solid'])
+                    ->columns(4)
+                    ->iconsSearchResults(false)
                     ->required(),
-                TextInput::make('color')
+                ColorPicker::make('color')
                     ->required(),
             ]);
     }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignId('owner_id')->constrained('users');
             $table->foreignId('category_id')->constrained('categories');
+            $table->json('split_with');
 
             $table->timestamps();
         });

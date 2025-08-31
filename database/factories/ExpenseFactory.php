@@ -19,13 +19,23 @@ class ExpenseFactory extends Factory
      */
     public function definition(): array
     {
+        $money = Money::ofMinor(fake()->numberBetween(1, 10000), 'EUR');
+        $users = User::inRandomOrder()->limit(fake()->numberBetween(2, User::count()))->get();
+        $split = $money->split($users->count());
+
+        $splitWith = [];
+        for ($i = 0; $i < count($users); $i++) {
+            $user = $users[$i];
+            $splitWith[$user->id] = $split[$i]->getMinorAmount()->toInt();
+        }
         return [
             'name' => fake()->word(),
-            'amount' => Money::ofMinor(fake()->numberBetween(1, 10000), 'EUR'),
+            'amount' => $money,
             'date' => fake()->dateTimeBetween('-30 days'),
             'description' => fake()->sentence(),
             'owner_id' => User::inRandomOrder()->first()->id,
             'category_id' => self::factoryForModel(Category::class),
+            'split_with' => $splitWith,
         ];
     }
 }

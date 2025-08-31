@@ -19,11 +19,13 @@ class Expense extends Model
         'description',
         'owner_id',
         'category_id',
+        'split_with',
     ];
 
     protected $casts = [
         'date' => 'date',
         'amount' => MoneyCast::class,
+        'split_with' => 'array',
     ];
 
     public function owner(): BelongsTo

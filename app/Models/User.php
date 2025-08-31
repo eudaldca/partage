@@ -16,6 +16,14 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    public Money $balance;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->balance = Money::of(0, 'EUR');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

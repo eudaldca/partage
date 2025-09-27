@@ -21,7 +21,7 @@ class User extends Authenticatable
     public function __construct()
     {
         parent::__construct();
-        $this->balance = Money::of(0, 'EUR');
+        $this->balance = Money::zero('EUR');
     }
 
     /**

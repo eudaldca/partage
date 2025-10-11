@@ -16,7 +16,7 @@ class PaymentForm
                 Select::make('from_user_id')
                     ->relationship('fromUser', 'name')
                     ->native(false)
-                    ->default((string)auth()->id())
+                    ->default((string) auth()->id())
                     ->live()
                     ->required(),
                 Select::make('to_user_id')

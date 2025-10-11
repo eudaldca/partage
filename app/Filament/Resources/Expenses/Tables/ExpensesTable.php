@@ -22,7 +22,7 @@ class ExpensesTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('amount')
-                    ->formatStateUsing(fn(Money $state) => $state->formatTo(config('app.locale')))
+                    ->formatStateUsing(fn (Money $state) => $state->formatTo(config('app.locale')))
                     ->sortable(),
                 TextColumn::make('date')
                     ->date()
@@ -32,8 +32,8 @@ class ExpensesTable
                 TextColumn::make('category.name')
                     ->searchable()
                     ->badge()
-                    ->icon(fn($record) => $record->category?->icon)
-                    ->color(fn($record) => $record->category?->color ? Color::hex($record->category->color) : Color::Gray),
+                    ->icon(fn ($record) => $record->category?->icon)
+                    ->color(fn ($record) => $record->category?->color ? Color::hex($record->category->color) : Color::Gray),
 
                 TextColumn::make('created_at')
                     ->dateTime()

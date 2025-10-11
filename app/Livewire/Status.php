@@ -11,11 +11,12 @@ use Filament\Widgets\ChartWidget;
 class Status extends ChartWidget
 {
     protected ?string $heading = 'Status';
+
     protected float $maxAbs = 0.0;
 
     protected function getData(): array
     {
-        $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user]);
+        $users = User::all()->mapWithKeys(fn ($user) => [$user->id => $user]);
         $expenses = Expense::all();
         $payments = Payment::all();
         foreach ($expenses as $expense) {
@@ -34,7 +35,7 @@ class Status extends ChartWidget
 
         $names = $users->pluck('name')->toArray();
         $values = $users
-            ->map(fn($user) => $user->balance->getAmount()->toFloat())
+            ->map(fn ($user) => $user->balance->getAmount()->toFloat())
             ->values()
             ->toArray();
 
@@ -49,8 +50,8 @@ class Status extends ChartWidget
                     'data' => $values,
                     'fill' => false,
                     'borderWidth' => 1,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -58,6 +59,7 @@ class Status extends ChartWidget
     {
         // Use symmetric bounds around zero to center the 0 line
         $max = $this->maxAbs ?: 1; // avoid identical min/max when all zeros
+
         return [
             'indexAxis' => 'y',
             'scales' => [

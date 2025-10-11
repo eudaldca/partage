@@ -28,6 +28,7 @@ class ExpenseFactory extends Factory
             $user = $users[$i];
             $splitWith[$user->id] = $split[$i]->getMinorAmount()->toInt();
         }
+
         return [
             'name' => fake()->word(),
             'amount' => $money,

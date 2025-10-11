@@ -20,7 +20,7 @@ class CategoriesTable
                 TextColumn::make('name')
                     ->searchable(),
                 IconColumn::make('icon')
-                    ->icon(fn($record) => $record->icon),
+                    ->icon(fn ($record) => $record->icon),
                 ColorColumn::make('color'),
                 TextColumn::make('created_at')
                     ->dateTime()

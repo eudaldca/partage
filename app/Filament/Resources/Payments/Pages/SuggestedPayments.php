@@ -24,6 +24,7 @@ class SuggestedPayments extends Page implements HasTable
     protected static string $resource = PaymentResource::class;
 
     protected string $view = 'filament.resources.payments.pages.suggested-payments';
+
     protected static ?string $slug = 'payments';
 
     /**
@@ -32,25 +33,25 @@ class SuggestedPayments extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->records(fn(): array => $this->obtainTableRecords())
+            ->records(fn (): array => $this->obtainTableRecords())
             ->columns([
                 TextColumn::make('from_user')
                     ->label('From User')
                     ->badge()
-                    ->formatStateUsing(fn($state) => $state->name)
+                    ->formatStateUsing(fn ($state) => $state->name)
                     ->color('danger')
                     ->icon('heroicon-o-arrow-right'),
 
                 TextColumn::make('to_user')
                     ->label('To User')
                     ->badge()
-                    ->formatStateUsing(fn($state) => $state->name)
+                    ->formatStateUsing(fn ($state) => $state->name)
                     ->color('success')
                     ->icon('heroicon-o-arrow-left'),
 
                 TextColumn::make('amount')
                     ->label('Amount')
-                    ->formatStateUsing(fn(Money $state) => $state->formatTo(app()->getLocale()))
+                    ->formatStateUsing(fn (Money $state) => $state->formatTo(app()->getLocale()))
                     ->money()
                     ->sortable()
                     ->weight('bold'),
@@ -62,8 +63,8 @@ class SuggestedPayments extends Page implements HasTable
                     ->icon('heroicon-o-banknotes')
                     ->requiresConfirmation()
                     ->modalHeading('Create Payment')
-                    ->modalDescription(fn($record) => sprintf(
-                        "Create a payment of %s from %s to %s?",
+                    ->modalDescription(fn ($record) => sprintf(
+                        'Create a payment of %s from %s to %s?',
                         $record['amount']->formatTo(app()->getLocale()),
                         $record['from_user']->name,
                         $record['to_user']->name)
@@ -81,12 +82,11 @@ class SuggestedPayments extends Page implements HasTable
             ->paginated(false);
     }
 
-
     protected function obtainTableRecords(): array
     {
         $suggestedPayments = $this->calculateSuggestedPayments();
 
-        return $suggestedPayments->map(fn($payment) => [
+        return $suggestedPayments->map(fn ($payment) => [
             'from_user' => $payment['from_user'],
             'to_user' => $payment['to_user'],
             'amount' => $payment['amount'],
@@ -96,7 +96,7 @@ class SuggestedPayments extends Page implements HasTable
     protected function calculateSuggestedPayments(): Collection
     {
         // Calculate user balances
-        $users = User::all()->mapWithKeys(fn($user) => [$user->id => $user]);
+        $users = User::all()->mapWithKeys(fn ($user) => [$user->id => $user]);
         $expenses = Expense::all();
         $payments = Payment::all();
 
@@ -108,7 +108,6 @@ class SuggestedPayments extends Page implements HasTable
                 $users[$userId]->balance = $users[$userId]->balance->minus($splitAmount);
             }
         }
-
 
         // Apply existing payments
         foreach ($payments as $payment) {
@@ -125,19 +124,19 @@ class SuggestedPayments extends Page implements HasTable
             if ($amount > 0) {
                 $creditors[] = [
                     'user' => $user,
-                    'amount' => $user->balance
+                    'amount' => $user->balance,
                 ];
             } elseif ($amount < 0) {
                 $debtors[] = [
                     'user' => $user,
-                    'amount' => $user->balance->abs()
+                    'amount' => $user->balance->abs(),
                 ];
             }
         }
 
         // Sort by amount (largest first) for better optimization
-        usort($creditors, fn($a, $b) => $b['amount']->compareTo($a['amount']));
-        usort($debtors, fn($a, $b) => $b['amount']->compareTo($a['amount']));
+        usort($creditors, fn ($a, $b) => $b['amount']->compareTo($a['amount']));
+        usort($debtors, fn ($a, $b) => $b['amount']->compareTo($a['amount']));
 
         // Calculate optimal payments
         $suggestedPayments = [];
@@ -156,7 +155,7 @@ class SuggestedPayments extends Page implements HasTable
                 $suggestedPayments[] = [
                     'from_user' => $debtor['user'],
                     'to_user' => $creditor['user'],
-                    'amount' => $paymentAmount
+                    'amount' => $paymentAmount,
                 ];
 
                 $creditor['amount'] = $creditor['amount']->minus($paymentAmount);
@@ -209,7 +208,7 @@ class SuggestedPayments extends Page implements HasTable
                 ->label('Refresh Suggestions')
                 ->icon('heroicon-o-arrow-path')
                 ->color('gray')
-                ->action(fn() => $this->dispatch('$refresh')),
+                ->action(fn () => $this->dispatch('$refresh')),
         ];
     }
 }

@@ -23,7 +23,7 @@ class PaymentsTable
                 TextColumn::make('toUser.name')
                     ->searchable(),
                 TextColumn::make('amount')
-                    ->formatStateUsing(fn(Money $state) => $state->formatTo(config('app.locale')))
+                    ->formatStateUsing(fn (Money $state) => $state->formatTo(config('app.locale')))
                     ->sortable(),
                 TextColumn::make('date')
                     ->date()

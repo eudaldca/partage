@@ -19,9 +19,9 @@ class User extends Authenticatable
 
     public Money $balance;
 
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
-        parent::__construct();
+        parent::__construct($attributes);
         $this->balance = Money::zero('EUR');
     }
 

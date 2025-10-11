@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use Database\Factories\ExpenseFactory;
 use Elegantly\Money\MoneyCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @mixin IdeHelperExpense
+ */
 class Expense extends Model
 {
-    /** @use HasFactory<\Database\Factories\ExpenseFactory> */
+    /** @use HasFactory<ExpenseFactory> */
     use HasFactory;
 
     protected $fillable = [

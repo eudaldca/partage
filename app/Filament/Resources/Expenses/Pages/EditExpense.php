@@ -48,7 +48,7 @@ class EditExpense extends EditRecord
             $totalAmount = $data['amount'];
             $data['participant_percentages'] = collect($splitWith)
                 ->map(function ($amount, $userId) use ($totalAmount) {
-                    $percentage = $totalAmount > 0 ? ($amount / $totalAmount) * 100 : 0;
+                    $percentage = $totalAmount > 0 ? ($amount / $totalAmount) : 0;
                     return [
                         'user_id' => $userId,
                         'percentage' => round($percentage, 2),

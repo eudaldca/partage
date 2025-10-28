@@ -19,13 +19,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     mariadb-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip opcache intl redis \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip opcache intl \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Install Composer 2.8
+COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
 
 # Install Node.js 20.x
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -46,6 +46,9 @@ RUN npm ci
 # Copy application files
 COPY . .
 
+# Create minimal .env file for build-time optimizations
+RUN echo "APP_NAME=Laravel\nAPP_ENV=production\nAPP_KEY=\nAPP_DEBUG=false\nAPP_URL=http://localhost\nDB_CONNECTION=mysql\nDB_HOST=127.0.0.1\nDB_PORT=3306\nDB_DATABASE=laravel\nDB_USERNAME=root\nDB_PASSWORD=" > .env
+
 # Build frontend assets
 RUN npm run build
 
@@ -63,6 +66,12 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && echo "opcache.memory_consumption=256" >> "$PHP_INI_DIR/conf.d/opcache.ini" \
     && echo "opcache.max_accelerated_files=20000" >> "$PHP_INI_DIR/conf.d/opcache.ini" \
     && echo "opcache.validate_timestamps=0" >> "$PHP_INI_DIR/conf.d/opcache.ini"
+
+# Laravel production optimizations
+RUN php artisan key:generate && php artisan optimize
+
+# Remove the build-time .env file (runtime env vars will be used)
+RUN rm .env
 
 EXPOSE 9000
 

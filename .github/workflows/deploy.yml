@@ -57,4 +57,4 @@ jobs:
       - name: Test Docker image
         run: |
           docker pull ghcr.io/eudaldca/partage:latest
-          docker run --rm ghcr.io/eudaldca/partage:latest php artisan --version
+          docker run --rm --entrypoint php ghcr.io/eudaldca/partage:latest artisan --version

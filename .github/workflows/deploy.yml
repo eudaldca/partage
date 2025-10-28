@@ -56,4 +56,5 @@ jobs:
 
       - name: Test Docker image
         run: |
-          docker run --rm ${{ steps.meta.outputs.tags }} php artisan --version
+          docker pull ghcr.io/eudaldca/partage:latest
+          docker run --rm ghcr.io/eudaldca/partage:latest php artisan --version

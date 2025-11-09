@@ -6,8 +6,10 @@ services:
     working_dir: /var/www/html
     volumes:
       - ${LARAVEL_STORAGE}:/var/www/html/storage
+      - ${NGINX_CONFIG}:/etc/nginx/conf.d/default.conf:ro
+      - ${SUPERVISOR_CONFIG}:/etc/supervisor/conf.d/
     ports:
-      - 8333:80
+      - ${WEB_PORT}:80
     environment:
       - DB_CONNECTION=mysql
       - DB_HOST=db
